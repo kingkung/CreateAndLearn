@@ -32,7 +32,7 @@ public class Magic8BallActivity extends AppCompatActivity {
     private void answerQuestion() {
         youAsked.setText("You asked: " + input.getText().toString());
         String reply = ANSWERS[(int)(Math.random() * ANSWERS.length) ];
-        answer.setText("Answer = " + reply);
+        answer.setText(reply);
         input.setText("");
     }
 }

@@ -20,5 +20,6 @@
         <activity android:name=".magic8ball.Magic8BallActivity" android:exported="true" />
         <activity android:name=".coincollection.CoinCollectionActivity" android:exported="true" />
         <activity android:name=".caesarcipher.CaesarCipherActivity" android:exported="true" />
+        <activity android:name=".foodorders.FoodOrdersActivity" android:exported="true" />
     </application>
 </manifest>

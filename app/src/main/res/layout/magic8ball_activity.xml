@@ -24,11 +24,13 @@
         app:layout_constraintBottom_toTopOf="@id/button" />
     <TextView
         android:id="@+id/answer"
+        android:background="@drawable/magic8ball"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="24sp"
         android:padding="16dp"
-        app:layout_constraintBottom_toTopOf="@id/button" />
+        android:gravity="center"
+        android:textColor="#ffffff" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
