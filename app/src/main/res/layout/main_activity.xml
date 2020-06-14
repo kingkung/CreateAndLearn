@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+    <Button
+        android:id="@+id/session1"
+        android:text="Session 1 - Trivia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp" />
+    <Button
+        android:id="@+id/session2"
+        android:text="Session 2 - Magic 8-Ball"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp" />
+    <Button
+        android:id="@+id/session3"
+        android:text="Session 3 - Coin Collection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp" />
+    <Button
+        android:id="@+id/session4"
+        android:text="Session 4 - Caesar Cipher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp" />
+</LinearLayout>
