@@ -10,8 +10,6 @@ import com.example.user.myapplication.R;
 
 public class RestaurantActivity extends Activity {
 
-    View button;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
