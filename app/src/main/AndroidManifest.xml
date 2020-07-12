@@ -21,5 +21,7 @@
         <activity android:name=".coincollection.CoinCollectionActivity" android:exported="true" />
         <activity android:name=".caesarcipher.CaesarCipherActivity" android:exported="true" />
         <activity android:name=".foodorders.FoodOrdersActivity" android:exported="true" />
+        <activity android:name=".lunchcombo.RestaurantActivity" android:exported="true" />
+        <activity android:name=".lunchcombo.LunchComboActivity" android:exported="false" />
     </application>
 </manifest>
