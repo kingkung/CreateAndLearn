@@ -19,6 +19,6 @@ public class RestaurantActivity extends Activity {
 
     void launchLunchComboActivity(View v) {
         Intent intent = new Intent(this, LunchComboActivity.class);
-        this.startActivity(intent);
+        startActivity(intent);
     }
 }

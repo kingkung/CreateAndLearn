@@ -39,4 +39,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp" />
+    <Button
+        android:id="@+id/memorycardgame"
+        android:text="Memory Card Game"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp" />
 </LinearLayout>

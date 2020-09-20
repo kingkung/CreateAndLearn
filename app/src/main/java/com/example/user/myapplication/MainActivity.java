@@ -6,9 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.example.user.myapplication.caesarcipher.CaesarCipherActivity;
 import com.example.user.myapplication.coincollection.CoinCollectionActivity;
+import com.example.user.myapplication.foodorders.FoodOrdersActivity;
 import com.example.user.myapplication.lunchcombo.RestaurantActivity;
 import com.example.user.myapplication.magic8ball.Magic8BallActivity;
-import com.example.user.myapplication.foodorders.FoodOrdersActivity;
+import com.example.user.myapplication.memorygame.MemoryGameActivity;
 import com.example.user.myapplication.trivia.TriviaActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
                 (v) -> launchProject(FoodOrdersActivity.class));
         findViewById(R.id.session8).setOnClickListener(
                 (v) -> launchProject(RestaurantActivity.class));
+        findViewById(R.id.memorycardgame).setOnClickListener(
+                (v) -> launchProject(MemoryGameActivity.class));
     }
 
     private void launchProject(Class className) {
