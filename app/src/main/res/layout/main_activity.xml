@@ -1,48 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center">
-    <Button
-        android:id="@+id/session1"
-        android:text="Session 1 - Trivia"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/lesson_launcher"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp" />
-    <Button
-        android:id="@+id/session2"
-        android:text="Session 2 - Magic 8-Ball"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp" />
-    <Button
-        android:id="@+id/session3"
-        android:text="Session 3 - Coin Collection"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp" />
-    <Button
-        android:id="@+id/session4"
-        android:text="Session 4 - Caesar Cipher"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp" />
-    <Button
-        android:id="@+id/session5"
-        android:text="Session 5 - Food Orders"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp" />
-    <Button
-        android:id="@+id/session8"
-        android:text="Session 8 - Lunch Combo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp" />
-    <Button
-        android:id="@+id/memorycardgame"
-        android:text="Memory Card Game"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp" />
-</LinearLayout>
+        android:layout_gravity="center"
+        android:gravity="center"/>
+</ScrollView>

@@ -24,6 +24,6 @@
         <activity android:name=".lunchcombo.RestaurantActivity" android:exported="true" />
         <activity android:name=".lunchcombo.LunchComboActivity" android:exported="false" />
         <activity android:name=".memorygame.MemoryGameActivity" android:exported="true" />
-
+        <activity android:name=".colormatchgame.ColorMatchGameActivity" android:exported="true" />
     </application>
 </manifest>

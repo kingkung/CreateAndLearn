@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.GridLayout;
@@ -73,12 +72,11 @@ public class MemoryGameActivity extends AppCompatActivity {
         prevIndex = -1;
         gridLayout.removeAllViews();
         for (int i = 0; i < numCards; i++) {
-            LayoutInflater.from(this).inflate(R.layout.memory_card, gridLayout);
-        }
-        for (int i = 0; i < gridLayout.getChildCount(); i++) {
             final int index = i;
-            ImageView card = (ImageView) gridLayout.getChildAt(index);
-            card.setOnClickListener((view) -> revealCard(card, index));
+            ImageView view = (ImageView) getLayoutInflater().inflate(
+                    R.layout.memory_card, gridLayout, false);
+            view.setOnClickListener((v) -> revealCard(view, index));
+            gridLayout.addView(view);
         }
     }
 
