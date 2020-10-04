@@ -13,6 +13,7 @@ import com.example.user.myapplication.foodorders.FoodOrdersActivity;
 import com.example.user.myapplication.lunchcombo.RestaurantActivity;
 import com.example.user.myapplication.magic8ball.Magic8BallActivity;
 import com.example.user.myapplication.memorygame.MemoryGameActivity;
+import com.example.user.myapplication.tenandahalf.TenAndAHalfActivity;
 import com.example.user.myapplication.trivia.TriviaActivity;
 import com.google.common.collect.ImmutableMap;
 
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final ImmutableMap<String, Class> LESSONS =
             new ImmutableMap.Builder<String, Class>()
+                    .put("Ten and a Half", TenAndAHalfActivity.class)
                     .put("Memory Game", MemoryGameActivity.class)
                     .put("Color Match Game", ColorMatchGameActivity.class)
                     .put("Session 1 - Trivia", TriviaActivity.class)
