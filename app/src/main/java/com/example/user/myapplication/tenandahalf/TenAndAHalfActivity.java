@@ -3,7 +3,6 @@ package com.example.user.myapplication.tenandahalf;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -15,169 +14,122 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.user.myapplication.R;
-import com.google.common.collect.ImmutableList;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+public class TenAndAHalfActivity extends AppCompatActivity implements GameController.GameEventCallback {
 
-public class TenAndAHalfActivity extends AppCompatActivity {
+    private final long DEALER_MOVE_DELAY_IN_MILLIS = 2500;
+    private final Handler handler = new Handler(Looper.getMainLooper());
+    private final GameController gameController = new GameController(this);
 
-    private static final ImmutableList<Card> DECK = ImmutableList.of(
-            new Card(R.drawable.spade2, 2),
-            new Card(R.drawable.spade3, 3),
-            new Card(R.drawable.spade5, 5),
-            new Card(R.drawable.spade4, 4),
-            new Card(R.drawable.spade6, 6),
-            new Card(R.drawable.spade7, 7),
-            new Card(R.drawable.spade8, 8),
-            new Card(R.drawable.spade9, 9),
-            new Card(R.drawable.spade10, 10),
-            new Card(R.drawable.spade_jack, 0.5),
-            new Card(R.drawable.spade_queen, 0.5),
-            new Card(R.drawable.spade_king, 0.5),
-            new Card(R.drawable.spade_ace, 1));
-    private static final double MAX = 10.5;
-    private static final int DRAGON = 5;
-
-    private ViewGroup yourCards;
-    private ViewGroup dealerCards;
-    private TextView yourScore;
-    private TextView dealerScore;
-    private ViewGroup actions;
-    private Button hit;
-    private Button stay;
-    private TextView result;
-    private Button newGame;
-
-    private Handler handler = new Handler(Looper.getMainLooper());
-    private double scorePlayer;
-    private double scoreDealer;
-    private List<Card> deck = new ArrayList<>();
+    private ViewGroup playerHandLayout;
+    private ViewGroup dealerHandLayout;
+    private TextView playerScoreTextView;
+    private TextView dealerScoreTextView;
+    private TextView gameResultTextView;
+    private ViewGroup buttonContainer;
+    private Button hitButton;
+    private Button stayButton;
+    private Button newGameButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ten_and_a_half_activity);
-        actions = findViewById(R.id.actions);
-        actions.setVisibility(View.INVISIBLE);
-        hit = findViewById(R.id.hit);
-        hit.setOnClickListener((v) -> dealYou());
-        stay = findViewById(R.id.stay);
-        stay.setOnClickListener((v) -> startDealingDealer());
-        yourCards = findViewById(R.id.player_cards);
-        yourScore = findViewById(R.id.player_score);
-        dealerCards = findViewById(R.id.dealer_cards);
-        dealerScore = findViewById(R.id.dealer_score);
-        result = findViewById(R.id.you_win);
-        result.setVisibility(View.INVISIBLE);
-        newGame = findViewById(R.id.new_game);
-        newGame.setOnClickListener((v) -> startNewGame());
+        buttonContainer = findViewById(R.id.actions);
+        buttonContainer.setVisibility(View.INVISIBLE);
+        hitButton = findViewById(R.id.hit);
+        hitButton.setOnClickListener((v) -> {
+            gameController.dealCardToYou();
+        });
+        stayButton = findViewById(R.id.stay);
+        stayButton.setOnClickListener((v) -> endYourTurn());
+        playerHandLayout = findViewById(R.id.player_cards);
+        playerScoreTextView = findViewById(R.id.player_score);
+        dealerHandLayout = findViewById(R.id.dealer_cards);
+        dealerScoreTextView = findViewById(R.id.dealer_score);
+        gameResultTextView = findViewById(R.id.you_win);
+        gameResultTextView.setVisibility(View.INVISIBLE);
+        newGameButton = findViewById(R.id.new_game);
+        newGameButton.setOnClickListener((v) -> startNewGame());
     }
 
     private void startNewGame() {
-        newGame.setEnabled(false);
-        scorePlayer = 0;
-        scoreDealer = 0;
-        result.setVisibility(View.INVISIBLE);
-        yourCards.removeAllViews();
-        dealerCards.removeAllViews();
-        yourScore.setText(getScoreText(scorePlayer));
-        dealerScore.setText(getScoreText(scoreDealer));
-        deck.clear();
-        deck.addAll(DECK);
-        actions.setVisibility(View.VISIBLE);
-        hit.setEnabled(true);
-        stay.setEnabled(true);
-        Collections.shuffle(deck);
-        dealDealer(false);
-        dealYou();
+        gameController.resetGameState();
+        newGameButton.setEnabled(false);
+        gameResultTextView.setVisibility(View.INVISIBLE);
+        playerHandLayout.removeAllViews();
+        dealerHandLayout.removeAllViews();
+        playerScoreTextView.setText(gameController.getPlayerScore());
+        dealerScoreTextView.setText(gameController.getDealerScore());
+        buttonContainer.setVisibility(View.VISIBLE);
+        hitButton.setEnabled(true);
+        stayButton.setEnabled(true);
+        gameController.dealCardToDealer();
+        gameController.dealCardToYou();
     }
 
-    private void startDealingDealer() {
-        hit.setEnabled(false);
-        stay.setEnabled(false);
-        dealerMove();
+    private void endYourTurn() {
+        gameController.endYourTurn();
+        hitButton.setEnabled(false);
+        stayButton.setEnabled(false);
+        makeDealerMove();
     }
 
-    private void dealerMove() {
+    private void makeDealerMove() {
         handler.postDelayed(() -> {
-            if (scoreDealer > MAX) {
-                youWin();
-            } else if (dealerCards.getChildCount() == 5) {
-                youLose();
-            } else if (scoreDealer > scorePlayer) {
-                youLose();
-            } else {
-                dealDealer(true);
+            boolean gameHasEnded = gameController.checkIfGameHasEnded();
+            if (!gameHasEnded) {
+                gameController.dealCardToDealer();
             }
-        }, 2500);
+        }, DEALER_MOVE_DELAY_IN_MILLIS);
     }
 
-    private void dealDealer(boolean dealAgain) {
-        Card card = deck.remove(0);
+    @Override
+    public void onPlayerWin() {
+        handler.removeCallbacksAndMessages(null);
+        gameResultTextView.setVisibility(View.VISIBLE);
+        gameResultTextView.setText("You Win!");
+        buttonContainer.setVisibility(View.INVISIBLE);
+        newGameButton.setEnabled(true);
+    }
+
+    @Override
+    public void onPlayerLoss() {
+        handler.removeCallbacksAndMessages(null);
+        gameResultTextView.setVisibility(View.VISIBLE);
+        gameResultTextView.setText("You Lose!");
+        buttonContainer.setVisibility(View.INVISIBLE);
+        newGameButton.setEnabled(true);
+    }
+
+    @Override
+    public void onCardDealtToPlayer(Card card) {
+        playerScoreTextView.setText(gameController.getPlayerScore());
         ImageView cardView =
-                (ImageView) LayoutInflater.from(this).inflate(R.layout.poker_card, dealerCards, false);
+                (ImageView) LayoutInflater.from(this).inflate(R.layout.poker_card, playerHandLayout, false);
         cardView.setImageResource(card.imageId);
-        if (yourCards.getChildCount() > 0) {
+        if (playerHandLayout.getChildCount() > 0) {
             LinearLayout.LayoutParams params =
                     (LinearLayout.LayoutParams) cardView.getLayoutParams();
             params.leftMargin = getResources().getDimensionPixelSize(R.dimen.overlap);
         }
-        dealerCards.addView(cardView);
-        scoreDealer += card.value;
-        dealerScore.setText(getScoreText(scoreDealer));
-        if (dealAgain) {
-            dealerMove();
-        }
+        playerHandLayout.addView(cardView);
     }
 
-    private void dealYou() {
-        Card card = deck.remove(0);
+    @Override
+    public void onCardDealtToDealer(Card card) {
         ImageView cardView =
-                (ImageView) LayoutInflater.from(this).inflate(R.layout.poker_card, yourCards, false);
+                (ImageView) LayoutInflater.from(this).inflate(R.layout.poker_card, dealerHandLayout, false);
         cardView.setImageResource(card.imageId);
-        if (yourCards.getChildCount() > 0) {
+        if (playerHandLayout.getChildCount() > 0) {
             LinearLayout.LayoutParams params =
                     (LinearLayout.LayoutParams) cardView.getLayoutParams();
             params.leftMargin = getResources().getDimensionPixelSize(R.dimen.overlap);
         }
-        yourCards.addView(cardView);
-        scorePlayer += card.value;
-        yourScore.setText(getScoreText(scorePlayer));
-
-        if (scorePlayer > MAX) {
-            youLose();
-        } else if (yourCards.getChildCount() == DRAGON) {
-            youWin();
-        }
-    }
-
-    private void youLose() {
-        result.setVisibility(View.VISIBLE);
-        result.setText("You Lose!");
-        actions.setVisibility(View.INVISIBLE);
-        newGame.setEnabled(true);
-    }
-
-    private void youWin() {
-        result.setVisibility(View.VISIBLE);
-        result.setText("You Win!");
-        actions.setVisibility(View.INVISIBLE);
-        newGame.setEnabled(true);
-    }
-
-    private String getScoreText(double d) {
-        return String.format("%.1f", d);
-    }
-
-    private static class Card {
-        @DrawableRes final int imageId;
-        final double value;
-
-        Card (@DrawableRes int imageId, double value) {
-            this.imageId = imageId;
-            this.value = value;
+        dealerHandLayout.addView(cardView);
+        dealerScoreTextView.setText(gameController.getDealerScore());
+        if (!gameController.isYourTurn()) {
+            makeDealerMove();
         }
     }
 }
