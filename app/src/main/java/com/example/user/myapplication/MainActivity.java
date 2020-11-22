@@ -13,6 +13,7 @@ import com.example.user.myapplication.foodorders.FoodOrdersActivity;
 import com.example.user.myapplication.lunchcombo.RestaurantActivity;
 import com.example.user.myapplication.magic8ball.Magic8BallActivity;
 import com.example.user.myapplication.memorygame.MemoryGameActivity;
+import com.example.user.myapplication.stepcounter.StepCounterActivity;
 import com.example.user.myapplication.tenandahalf.TenAndAHalfActivity;
 import com.example.user.myapplication.trivia.TriviaActivity;
 import com.google.common.collect.ImmutableMap;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
                     .put("Ten and a Half", TenAndAHalfActivity.class)
                     .put("Memory Game", MemoryGameActivity.class)
                     .put("Color Match Game", ColorMatchGameActivity.class)
+                    .put("Step Counter", StepCounterActivity.class)
                     .put("Session 1 - Trivia", TriviaActivity.class)
                     .put("Session 2 - Magic 8-Ball", Magic8BallActivity.class)
                     .put("Session 3 - Coin Collection", CoinCollectionActivity.class)

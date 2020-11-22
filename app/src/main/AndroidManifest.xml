@@ -26,5 +26,13 @@
         <activity android:name=".memorygame.MemoryGameActivity" android:exported="true" />
         <activity android:name=".colormatchgame.ColorMatchGameActivity" android:exported="true" />
         <activity android:name=".tenandahalf.TenAndAHalfActivity" android:exported="true" />
+        <activity android:name=".stepcounter.StepCounterActivity" android:exported="true" />
+        <receiver android:name=".stepcounter.StepCounterWidget" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/step_counter_app_widget_info" />
+        </receiver>
     </application>
 </manifest>
