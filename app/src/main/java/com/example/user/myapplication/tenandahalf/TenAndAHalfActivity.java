@@ -15,14 +15,15 @@ import android.widget.TextView;
 
 import com.example.user.myapplication.R;
 
-public class TenAndAHalfActivity extends AppCompatActivity implements GameController.GameEventCallback {
+public class TenAndAHalfActivity extends AppCompatActivity {
 
     private final long DEALER_MOVE_DELAY_IN_MILLIS = 2500;
     private final Handler handler = new Handler(Looper.getMainLooper());
-    private final GameController gameController = new GameController(this);
 
-    private ViewGroup playerHandLayout;
-    private ViewGroup dealerHandLayout;
+    private TenDotFiveGame game;
+
+    private LinearLayout playerHandLayout;
+    private LinearLayout dealerHandLayout;
     private TextView playerScoreTextView;
     private TextView dealerScoreTextView;
     private TextView gameResultTextView;
@@ -38,11 +39,9 @@ public class TenAndAHalfActivity extends AppCompatActivity implements GameContro
         buttonContainer = findViewById(R.id.actions);
         buttonContainer.setVisibility(View.INVISIBLE);
         hitButton = findViewById(R.id.hit);
-        hitButton.setOnClickListener((v) -> {
-            gameController.dealCardToYou();
-        });
+        hitButton.setOnClickListener((v) -> dealCardToPlayer());
         stayButton = findViewById(R.id.stay);
-        stayButton.setOnClickListener((v) -> endYourTurn());
+        stayButton.setOnClickListener((v) -> startDealerTurn());
         playerHandLayout = findViewById(R.id.player_cards);
         playerScoreTextView = findViewById(R.id.player_score);
         dealerHandLayout = findViewById(R.id.dealer_cards);
@@ -54,82 +53,77 @@ public class TenAndAHalfActivity extends AppCompatActivity implements GameContro
     }
 
     private void startNewGame() {
-        gameController.resetGameState();
+        game = new TenDotFiveGame();
         newGameButton.setEnabled(false);
         gameResultTextView.setVisibility(View.INVISIBLE);
+        playerScoreTextView.setText(Double.toString(game.getPlayerTotal()));
+        dealerScoreTextView.setText(Double.toString(game.getDealerTotal()));
         playerHandLayout.removeAllViews();
         dealerHandLayout.removeAllViews();
-        playerScoreTextView.setText(gameController.getPlayerScore());
-        dealerScoreTextView.setText(gameController.getDealerScore());
         buttonContainer.setVisibility(View.VISIBLE);
         hitButton.setEnabled(true);
         stayButton.setEnabled(true);
-        gameController.dealCardToDealer();
-        gameController.dealCardToYou();
+        // Deal one card to the player and one card to the dealer.
+        dealCardToPlayer();
+        dealCardToDealer();
     }
 
-    private void endYourTurn() {
-        gameController.endYourTurn();
+    private void startDealerTurn() {
         hitButton.setEnabled(false);
         stayButton.setEnabled(false);
-        makeDealerMove();
+        nextDealerMove();
     }
 
-    private void makeDealerMove() {
+    private void nextDealerMove() {
+        // Check for end game state, end game if dealer busts or shouldn't hit again.
+        if (game.dealerIsBusted() || !game.dealerShouldHit()) {
+            endGame();
+            return;
+        }
+        // Otherwise, deal the next dealer card on a 2.5s delay, and recursively call this method.
         handler.postDelayed(() -> {
-            boolean gameHasEnded = gameController.checkIfGameHasEnded();
-            if (!gameHasEnded) {
-                gameController.dealCardToDealer();
-            }
+            dealCardToDealer();
+            nextDealerMove();
         }, DEALER_MOVE_DELAY_IN_MILLIS);
     }
 
-    @Override
-    public void onPlayerWin() {
+    private void endGame() {
         handler.removeCallbacksAndMessages(null);
         gameResultTextView.setVisibility(View.VISIBLE);
-        gameResultTextView.setText("You Win!");
+        gameResultTextView.setText(game.getWinner());
         buttonContainer.setVisibility(View.INVISIBLE);
         newGameButton.setEnabled(true);
     }
 
-    @Override
-    public void onPlayerLoss() {
-        handler.removeCallbacksAndMessages(null);
-        gameResultTextView.setVisibility(View.VISIBLE);
-        gameResultTextView.setText("You Lose!");
-        buttonContainer.setVisibility(View.INVISIBLE);
-        newGameButton.setEnabled(true);
+    private void dealCardToPlayer() {
+        Card card = game.playerHit();
+        playerScoreTextView.setText(Double.toString(game.getPlayerTotal()));
+        inflateCardViewAndAddToLayout(card, playerHandLayout);
+        if (game.playerIsBusted()) {
+            endGame();
+        }
     }
 
-    @Override
-    public void onCardDealtToPlayer(Card card) {
-        playerScoreTextView.setText(gameController.getPlayerScore());
+    private void dealCardToDealer() {
+        Card card = game.dealerHit();
+        dealerScoreTextView.setText(Double.toString(game.getDealerTotal()));
+        inflateCardViewAndAddToLayout(card, dealerHandLayout);
+    }
+
+    private void inflateCardViewAndAddToLayout(Card card, LinearLayout layout) {
+        // Inflate a view representing a card.
         ImageView cardView =
-                (ImageView) LayoutInflater.from(this).inflate(R.layout.poker_card, playerHandLayout, false);
-        cardView.setImageResource(card.imageId);
-        if (playerHandLayout.getChildCount() > 0) {
+                (ImageView) LayoutInflater.from(this).inflate(R.layout.poker_card, layout, false);
+        // Set the ImageView resource to the card's image id
+        cardView.setImageResource(card.getImageResId());
+        // If this isn't the first card in the layout, adjust the margins so that this card overlaps
+        // the previous card in the layout.
+        if (layout.getChildCount() > 0) {
             LinearLayout.LayoutParams params =
                     (LinearLayout.LayoutParams) cardView.getLayoutParams();
             params.leftMargin = getResources().getDimensionPixelSize(R.dimen.overlap);
         }
-        playerHandLayout.addView(cardView);
-    }
-
-    @Override
-    public void onCardDealtToDealer(Card card) {
-        ImageView cardView =
-                (ImageView) LayoutInflater.from(this).inflate(R.layout.poker_card, dealerHandLayout, false);
-        cardView.setImageResource(card.imageId);
-        if (playerHandLayout.getChildCount() > 0) {
-            LinearLayout.LayoutParams params =
-                    (LinearLayout.LayoutParams) cardView.getLayoutParams();
-            params.leftMargin = getResources().getDimensionPixelSize(R.dimen.overlap);
-        }
-        dealerHandLayout.addView(cardView);
-        dealerScoreTextView.setText(gameController.getDealerScore());
-        if (!gameController.isYourTurn()) {
-            makeDealerMove();
-        }
+        // Add the card to the layout.
+        layout.addView(cardView);
     }
 }
