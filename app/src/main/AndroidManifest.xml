@@ -25,7 +25,7 @@
         <activity android:name=".lunchcombo.LunchComboActivity" android:exported="false" />
         <activity android:name=".memorygame.MemoryGameActivity" android:exported="true" />
         <activity android:name=".colormatchgame.ColorMatchGameActivity" android:exported="true" />
-        <activity android:name=".tenandahalf.TenAndAHalfActivity" android:exported="true" />
+        <activity android:name=".tendotfive.TenDotFiveActivity" android:exported="true" />
         <activity android:name=".stepcounter.StepCounterActivity" android:exported="true" />
         <receiver android:name=".stepcounter.StepCounterWidget" >
             <intent-filter>

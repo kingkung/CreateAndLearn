@@ -1,7 +1,4 @@
-package com.example.user.myapplication.tenandahalf;
-
-import android.support.annotation.DrawableRes;
-import android.support.annotation.IdRes;
+package com.example.user.myapplication.tendotfive;
 
 public class Card
 {

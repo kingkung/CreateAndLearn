@@ -1,4 +1,4 @@
-package com.example.user.myapplication.tenandahalf;
+package com.example.user.myapplication.tendotfive;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.example.user.myapplication.R;
 
-public class TenAndAHalfActivity extends AppCompatActivity {
+public class TenDotFiveActivity extends AppCompatActivity {
 
     private final long DEALER_MOVE_DELAY_IN_MILLIS = 2500;
     private final Handler handler = new Handler(Looper.getMainLooper());
