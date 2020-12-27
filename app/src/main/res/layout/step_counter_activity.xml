@@ -11,12 +11,6 @@
     android:alpha="0.90">
     <!--android:background="@mipmap/h"-->
 
-    <com.example.user.myapplication.stepcounter.Animation
-        android:id="@+id/custom_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
-
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
