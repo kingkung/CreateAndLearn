@@ -41,7 +41,7 @@ public class HuntTheWumpusActivity extends AppCompatActivity {
         caveBackground2 = findViewById(R.id.cave_background2);
         wumpus = findViewById(R.id.wumpus);
         bottomlessPit = findViewById(R.id.bottomless_pit);
-        tossGrenadeSwitch = findViewById(R.id.button_bomb);
+        tossGrenadeSwitch = findViewById(R.id.toss_grenade_switch);
         grenadeCount = findViewById(R.id.grenade_count);
         wumpusCount = findViewById(R.id.wumpus_count);
         resultText = findViewById(R.id.result);

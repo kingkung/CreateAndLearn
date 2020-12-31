@@ -78,7 +78,7 @@
     </FrameLayout>
 
     <Switch
-        android:id="@+id/button_bomb"
+        android:id="@+id/toss_grenade_switch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
