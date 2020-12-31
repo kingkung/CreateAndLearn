@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".huntthewumpus.HuntTheWumpusActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -16,15 +17,36 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".trivia.TriviaActivity" android:exported="true" />
-        <activity android:name=".magic8ball.Magic8BallActivity" android:exported="true" />
-        <activity android:name=".coincollection.CoinCollectionActivity" android:exported="true" />
-        <activity android:name=".caesarcipher.CaesarCipherActivity" android:exported="true" />
-        <activity android:name=".foodorders.FoodOrdersActivity" android:exported="true" />
-        <activity android:name=".lunchcombo.RestaurantActivity" android:exported="true" />
-        <activity android:name=".lunchcombo.LunchComboActivity" android:exported="false" />
-        <activity android:name=".memorygame.MemoryGameActivity" android:exported="true" />
-        <activity android:name=".colormatchgame.ColorMatchGameActivity" android:exported="true" />
-        <activity android:name=".tendotfive.TenDotFiveActivity" android:exported="true" />
+        <activity
+            android:name=".trivia.TriviaActivity"
+            android:exported="true" />
+        <activity
+            android:name=".magic8ball.Magic8BallActivity"
+            android:exported="true" />
+        <activity
+            android:name=".coincollection.CoinCollectionActivity"
+            android:exported="true" />
+        <activity
+            android:name=".caesarcipher.CaesarCipherActivity"
+            android:exported="true" />
+        <activity
+            android:name=".foodorders.FoodOrdersActivity"
+            android:exported="true" />
+        <activity
+            android:name=".lunchcombo.RestaurantActivity"
+            android:exported="true" />
+        <activity
+            android:name=".lunchcombo.LunchComboActivity"
+            android:exported="false" />
+        <activity
+            android:name=".memorygame.MemoryGameActivity"
+            android:exported="true" />
+        <activity
+            android:name=".colormatchgame.ColorMatchGameActivity"
+            android:exported="true" />
+        <activity
+            android:name=".tendotfive.TenDotFiveActivity"
+            android:exported="true" />
     </application>
+
 </manifest>

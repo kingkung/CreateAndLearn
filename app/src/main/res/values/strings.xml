@@ -1,7 +1,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">My Application</string>
-    <string name="color_match_score">Current Score: <xliff:g id="score" example="3">%d</xliff:g></string>
-    <string name="color_match_high_score">High Score: <xliff:g id="score" example="3">%d</xliff:g></string>
-    <string name="dealer_score">Dealer Score: <xliff:g id="score" example="3">%.1f</xliff:g></string>
-    <string name="player_score">Your Score: <xliff:g id="score" example="3">%.1f</xliff:g></string>
+    <string name="color_match_score">Current Score: <xliff:g example="3" id="score">%d</xliff:g></string>
+    <string name="color_match_high_score">High Score: <xliff:g example="3" id="score">%d</xliff:g></string>
+    <string name="dealer_score">Dealer Score: <xliff:g example="3" id="score">%.1f</xliff:g></string>
+    <string name="player_score">Your Score: <xliff:g example="3" id="score">%.1f</xliff:g></string>
 </resources>

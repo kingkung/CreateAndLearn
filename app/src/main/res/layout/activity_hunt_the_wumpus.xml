@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".huntthewumpus.HuntTheWumpusActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/cave_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitStart"
+            app:srcCompat="@drawable/cave_bg" />
+
+        <ImageView
+            android:id="@+id/cave_background2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitStart"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/cave_bg" />
+
+        <ImageView
+            android:id="@+id/button_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/left_arrow" />
+
+        <ImageView
+            android:id="@+id/button_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|top"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/up_arrow" />
+
+        <ImageView
+            android:id="@+id/button_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/down_arrow" />
+
+        <ImageView
+            android:id="@+id/button_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/right_arrow" />
+
+        <ImageView
+            android:id="@+id/wumpus"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/wumpus" />
+
+        <ImageView
+            android:id="@+id/bottomless_pit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/bottomless_pit" />
+    </FrameLayout>
+
+    <Switch
+        android:id="@+id/button_bomb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="16dp"
+        android:showText="true"
+        android:text="Choose Your Action"
+        android:textOff="Walk"
+        android:textOn="Toss Grenade"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/wumpus_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/grenade_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/result"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:textColor="@android:color/holo_red_light"
+        android:textSize="18sp"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/new_game"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:text="New Game" />
+</LinearLayout>

@@ -11,6 +11,7 @@ import com.example.user.myapplication.caesarcipher.CaesarCipherActivity;
 import com.example.user.myapplication.coincollection.CoinCollectionActivity;
 import com.example.user.myapplication.colormatchgame.ColorMatchGameActivity;
 import com.example.user.myapplication.foodorders.FoodOrdersActivity;
+import com.example.user.myapplication.huntthewumpus.HuntTheWumpusActivity;
 import com.example.user.myapplication.lunchcombo.RestaurantActivity;
 import com.example.user.myapplication.magic8ball.Magic8BallActivity;
 import com.example.user.myapplication.memorygame.MemoryGameActivity;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private static final ImmutableMap<String, Class> LESSONS =
             new ImmutableMap.Builder<String, Class>()
                     .put("Ten Dot Five", TenDotFiveActivity.class)
+                    .put("Hunt The Wumpus", HuntTheWumpusActivity.class)
                     .put("Memory Game", MemoryGameActivity.class)
                     .put("Color Match Game", ColorMatchGameActivity.class)
                     .put("Session 1 - Trivia", TriviaActivity.class)
