@@ -77,6 +77,10 @@ public class CaveMaze
         currentCave.markAsVisited(); // mark it visited
     }
 
+    public String getRoomNumber() {
+        return row + "-" + col;
+    }
+
     public int getGrenades()
     {
         return numGrenades;

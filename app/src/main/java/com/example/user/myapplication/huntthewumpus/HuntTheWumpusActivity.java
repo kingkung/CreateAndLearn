@@ -24,6 +24,7 @@ public class HuntTheWumpusActivity extends AppCompatActivity {
     View caveBackground2;
     View wumpus;
     View bottomlessPit;
+    TextView roomNumber;
     TextView grenadeCount;
     TextView wumpusCount;
     TextView resultText;
@@ -44,6 +45,7 @@ public class HuntTheWumpusActivity extends AppCompatActivity {
         tossGrenadeSwitch = findViewById(R.id.toss_grenade_switch);
         grenadeCount = findViewById(R.id.grenade_count);
         wumpusCount = findViewById(R.id.wumpus_count);
+        roomNumber = findViewById(R.id.room_number);
         resultText = findViewById(R.id.result);
         newGameButton = findViewById(R.id.new_game);
         newGameButton.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +116,7 @@ public class HuntTheWumpusActivity extends AppCompatActivity {
                     public void onAnimationEnd(Animation animation) {
                         String result = caveMaze.move(action.moveCommand);
                         resultText.setText(result);
+                        roomNumber.setText(caveMaze.getRoomNumber());
                         if (result.toLowerCase().contains("wumpus")) {
                             wumpus.setVisibility(View.VISIBLE);
                         } else if (result.toLowerCase().contains("pit")) {
@@ -146,6 +149,7 @@ public class HuntTheWumpusActivity extends AppCompatActivity {
 
     private void startNewGame() {
         caveMaze = new CaveMaze();
+        roomNumber.setText(caveMaze.getRoomNumber());
         tossGrenadeSwitch.setChecked(false);
         wumpus.setVisibility(View.INVISIBLE);
         bottomlessPit.setVisibility(View.INVISIBLE);
