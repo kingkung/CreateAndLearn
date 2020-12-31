@@ -1,5 +1,6 @@
 package com.example.user.myapplication.huntthewumpus;
 
+import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ public class HuntTheWumpusActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("Hunt the Wumpus!");
         setContentView(R.layout.activity_hunt_the_wumpus);
         caveMaze = new CaveMaze();
         caveBackground = findViewById(R.id.cave_background);
@@ -66,20 +68,38 @@ public class HuntTheWumpusActivity extends AppCompatActivity {
                     toast.cancel();
                 }
                 if (tossGrenadeSwitch.isChecked()) {
-                    ObjectAnimator
+                    ObjectAnimator animator = ObjectAnimator
                             .ofFloat(caveBackground, "translationX", 0, 25, -25, 25, -25,15, -15, 6, -6, 0)
-                            .setDuration(700)
-                            .start();
-                    String result = caveMaze.tossGrenade(action.throwCommand);
-                    resultText.setText(result);
-                    updateGrenadeAndWumpusCount();
-                    if (!caveMaze.stillWumpi()) {
-                        showGameEndDialog("You have successfully defeated the wumpi! Congratulations!");
-                        return;
-                    } else if (caveMaze.getGrenades() <= 0) {
-                        showGameEndDialog("You're out of grenades! Please try again.");
-                        return;
-                    }
+                            .setDuration(700);
+                    animator.addListener(new Animator.AnimatorListener() {
+                                @Override
+                                public void onAnimationStart(Animator animator) {
+
+                                }
+
+                                @Override
+                                public void onAnimationEnd(Animator animator) {
+                                    String result = caveMaze.tossGrenade(action.throwCommand);
+                                    resultText.setText(result);
+                                    updateGrenadeAndWumpusCount();
+                                    if (!caveMaze.stillWumpi()) {
+                                        showGameEndDialog("You have successfully defeated the wumpi! Congratulations!");
+                                    } else if (caveMaze.getGrenades() <= 0) {
+                                        showGameEndDialog("You're out of grenades! Please try again.");
+                                    }
+                                }
+
+                                @Override
+                                public void onAnimationCancel(Animator animator) {
+
+                                }
+
+                                @Override
+                                public void onAnimationRepeat(Animator animator) {
+
+                                }
+                            });
+                    animator.start();
                     return;
                 }
                 caveBackground.startAnimation(AnimationUtils.loadAnimation(HuntTheWumpusActivity.this, action.inAnimationId));

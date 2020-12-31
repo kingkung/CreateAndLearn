@@ -1,7 +1,5 @@
 package com.example.user.myapplication.huntthewumpus;
 
-import java.util.Scanner;
-
 /**
  * Class that models a maze of caves for the "Hunt the Wumpus" game.
  */
@@ -33,7 +31,7 @@ public class CaveMaze
                 caves[i][j] = new Cave("Cave " + i + j);
             }
         }
-        numWumpi = (int)(Math.random()*3) + 1;
+        numWumpi = 3;
         numGrenades = numWumpi * 3;
 
         // Place the Wumpi
@@ -98,7 +96,7 @@ public class CaveMaze
      * Moves the player from the current cave along the specified tunnel.  The new location must be marked
      * as visited and the appropriate action taken if the new location is not empty. <br>
      * Note: if the tunnel # is not 1-3, then an error message should be returned.
-     *   @param tunnel the number of the tunnel to be traversed (1-3)
+     *   @param dir the direction to be traversed (1-3)
      *   @return a status message describing the result of the move attempt
      */
     public String move(String dir)
