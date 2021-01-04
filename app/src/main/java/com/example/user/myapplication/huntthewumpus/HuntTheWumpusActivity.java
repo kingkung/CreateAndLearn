@@ -18,8 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.user.myapplication.R;
 
 public class HuntTheWumpusActivity extends AppCompatActivity {
+    private static final int TOSS_GRENADE_ANIMATION_DURATION = 700;
 
-    CaveMaze caveMaze;
     View caveBackground;
     View caveBackground2;
     View wumpus;
@@ -30,6 +30,8 @@ public class HuntTheWumpusActivity extends AppCompatActivity {
     TextView resultText;
     Switch tossGrenadeSwitch;
     View newGameButton;
+
+    CaveMaze caveMaze;
     private Toast toast;
 
     @Override
@@ -37,8 +39,8 @@ public class HuntTheWumpusActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setTitle("Hunt the Wumpus!");
         setContentView(R.layout.activity_hunt_the_wumpus);
-        caveMaze = new CaveMaze();
         caveBackground = findViewById(R.id.cave_background);
+        // This second background is used solely in the animation from one room to another.
         caveBackground2 = findViewById(R.id.cave_background2);
         wumpus = findViewById(R.id.wumpus);
         bottomlessPit = findViewById(R.id.bottomless_pit);
@@ -54,14 +56,14 @@ public class HuntTheWumpusActivity extends AppCompatActivity {
                 startNewGame();
             }
         });
-        initializeDirectionalButton(R.id.button_left, Action.WEST);
-        initializeDirectionalButton(R.id.button_right, Action.EAST);
-        initializeDirectionalButton(R.id.button_up, Action.NORTH);
-        initializeDirectionalButton(R.id.button_down, Action.SOUTH);
+        initializeDirectionalButton(R.id.button_left, Direction.WEST);
+        initializeDirectionalButton(R.id.button_right, Direction.EAST);
+        initializeDirectionalButton(R.id.button_up, Direction.NORTH);
+        initializeDirectionalButton(R.id.button_down, Direction.SOUTH);
         startNewGame();
     }
 
-    private void initializeDirectionalButton(int buttonId, Action action) {
+    private void initializeDirectionalButton(int buttonId, Direction direction) {
         View button = findViewById(buttonId);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,81 +72,12 @@ public class HuntTheWumpusActivity extends AppCompatActivity {
                     toast.cancel();
                 }
                 if (tossGrenadeSwitch.isChecked()) {
-                    ObjectAnimator animator = ObjectAnimator
-                            .ofFloat(caveBackground, "translationX", 0, 25, -25, 25, -25,15, -15, 6, -6, 0)
-                            .setDuration(700);
-                    animator.addListener(new Animator.AnimatorListener() {
-                                @Override
-                                public void onAnimationStart(Animator animator) {
-
-                                }
-
-                                @Override
-                                public void onAnimationEnd(Animator animator) {
-                                    String result = caveMaze.tossGrenade(action.throwCommand);
-                                    resultText.setText(result);
-                                    updateGrenadeAndWumpusCount();
-                                    if (!caveMaze.stillWumpi()) {
-                                        showGameEndDialog("You have successfully defeated the wumpi! Congratulations!");
-                                    } else if (caveMaze.getGrenades() <= 0) {
-                                        showGameEndDialog("You're out of grenades! Please try again.");
-                                    }
-                                }
-
-                                @Override
-                                public void onAnimationCancel(Animator animator) {
-
-                                }
-
-                                @Override
-                                public void onAnimationRepeat(Animator animator) {
-
-                                }
-                            });
-                    animator.start();
-                    return;
+                    startGrenadeTossAnimation(direction);
+                } else {
+                    startMoveAnimation(direction);
                 }
-                caveBackground.startAnimation(AnimationUtils.loadAnimation(HuntTheWumpusActivity.this, action.inAnimationId));
-                caveBackground2.startAnimation(AnimationUtils.loadAnimation(HuntTheWumpusActivity.this, action.outAnimationId));
-                caveBackground.getAnimation().setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        String result = caveMaze.move(action.moveCommand);
-                        resultText.setText(result);
-                        roomNumber.setText(caveMaze.getRoomNumber());
-                        if (result.toLowerCase().contains("wumpus")) {
-                            wumpus.setVisibility(View.VISIBLE);
-                        } else if (result.toLowerCase().contains("pit")) {
-                            bottomlessPit.setVisibility(View.VISIBLE);
-                        } else {
-                            showHintsIfTheyExist();
-                        }
-                    }
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-
-                    }
-                });
             }
         });
-    }
-
-    private void showGameEndDialog(String endGameMessage) {
-        new AlertDialog.Builder(HuntTheWumpusActivity.this)
-                .setCancelable(false)
-                .setMessage(endGameMessage)
-                .setPositiveButton("New Game", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        startNewGame();
-                    }
-                }).show();
     }
 
     private void startNewGame() {
@@ -170,5 +103,88 @@ public class HuntTheWumpusActivity extends AppCompatActivity {
         }
     }
 
+    private void doGrenadeToss(Direction direction) {
+        String result = caveMaze.tossGrenade(direction.throwCommand);
+        resultText.setText(result);
+        updateGrenadeAndWumpusCount();
+        if (!caveMaze.stillWumpi()) {
+            // If the grenade toss resulted in no more wumpi, show a 'Congrats!' dialog.
+            showGameEndDialog("You have successfully defeated the wumpi! Congratulations!");
+        } else if (caveMaze.getGrenades() <= 0) {
+            // If the player is out of grenades, show a 'Game Over' dialog.
+            showGameEndDialog("You're out of grenades! Please try again.");
+        }
+    }
 
+    private void showGameEndDialog(String endGameMessage) {
+        new AlertDialog.Builder(HuntTheWumpusActivity.this)
+                .setCancelable(false)
+                .setMessage(endGameMessage)
+                .setPositiveButton("New Game", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        startNewGame();
+                    }
+                }).show();
+    }
+
+    private void doMove(Direction direction) {
+        String result = caveMaze.move(direction.moveCommand);
+        resultText.setText(result);
+        roomNumber.setText(caveMaze.getRoomNumber());
+        if (result.toLowerCase().contains("wumpus")) {
+            // We've run into a room with a wumpus, fill the frame with the wumpus image.
+            wumpus.setVisibility(View.VISIBLE);
+        } else if (result.toLowerCase().contains("pit")) {
+            // We've run into a room with a pit, fill the frame with the pit image.
+            bottomlessPit.setVisibility(View.VISIBLE);
+        } else {
+            // We've safely made it to another room. Show the hints for the room.
+            showHintsIfTheyExist();
+        }
+    }
+
+    private void startGrenadeTossAnimation(Direction direction) {
+        // Move the cave background back and forth horizontally so it looks like it's shaking.
+        ObjectAnimator animator = ObjectAnimator
+                .ofFloat(caveBackground, "translationX", 0, 25, -25, 25, -25, 15, -15, 6, -6, 0)
+                .setDuration(TOSS_GRENADE_ANIMATION_DURATION);
+        animator.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {}
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                doGrenadeToss(direction);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {}
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {}
+        });
+        animator.start();
+    }
+
+    private void startMoveAnimation(Direction direction) {
+        // Have one image slide into the frame while another image slides out, so it looks like
+        // the player is moving from one room to another.
+        caveBackground.startAnimation(
+                AnimationUtils.loadAnimation(HuntTheWumpusActivity.this, direction.inAnimationId));
+        caveBackground2.startAnimation(
+                AnimationUtils.loadAnimation(HuntTheWumpusActivity.this, direction.outAnimationId));
+        caveBackground.getAnimation().setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                doMove(direction);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+    }
 }
